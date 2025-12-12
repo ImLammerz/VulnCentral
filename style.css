@@ -1,0 +1,643 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f1f3f4;
+}
+
+/* TOPBAR */
+.topbar {
+  background: #32a852;
+  color: white;
+  padding: 10px 25px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,.3);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.topbar-logo {
+  height: 28px;          /* pas dengan tinggi topbar */
+  margin-right: 10px;    /* jarak ke teks */
+  object-fit: contain;
+}
+
+
+.topbar-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* TOPBAR RIGHT: user info & logout button */
+.topbar-right {
+  margin-left: auto;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-info {
+  color: #fff;
+  font-size: 14px;
+}
+
+.logout-btn {
+  background: #e53935;
+  padding: 6px 14px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+  border: 1px solid #b71c1c;
+}
+
+.logout-btn:hover {
+  background: #b71c1c;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 200px;
+  background: #2c7840;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 6px rgba(0,0,0,.2);
+}
+
+.menu-title {
+  color: #ccc;
+  font-size: 12px;
+  padding: 15px 20px 5px 20px;
+}
+
+.menu-items {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.menu-item {
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  border-left: 4px solid transparent;
+  display: block;
+}
+
+.menu-item:hover {
+  background: #3b3f45;
+  border-left: 4px solid #007bff;
+}
+
+.menu-item.active {
+  background: #007bff;
+  border-left: 4px solid white;
+}
+
+/* MAIN CONTENT */
+.page {
+  margin-left: 220px;
+  padding: 90px 20px;
+}
+
+.container {
+  background: white;
+  width: 100%;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,.1);
+}
+
+h3 {
+  margin: 0 0 10px 0;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background: #32a852;
+  color: white;
+}
+
+.table-responsive{
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table{
+  min-width: 900px; /* sesuaikan: 800-1200 tergantung jumlah kolom */
+}
+
+.table-responsive th,
+.table-responsive td{
+  white-space: nowrap; /* biar tiap kolom nggak patah2 */
+}
+
+
+/* Severity colors */
+.sev-critical {
+  background: #730505;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sev-high {
+  background: #c7281a;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sev-medium {
+  background: #edcb66;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.sev-low {
+  background: #37bf3e;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sev-none {
+  background: #10d6e0;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* BUTTON (umum) */
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+
+button.close {
+  background: #6c757d;
+}
+
+/* BTN DELETE */
+.btn-delete {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #e63946; /* merah */
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-delete:hover {
+    background-color: #c62828;
+    transform: scale(1.05);
+}
+
+.btn-delete:active {
+    background-color: #a91515;
+}
+
+/* CHART AREA */
+.charts-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.chart-card {
+  flex: 1 1 320px;
+  max-width: 420px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.chart-canvas {
+  width: 100% !important;
+  height: 220px !important;
+}
+
+/* MODAL */
+.modal-bg {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 90%;
+}
+
+.modal-bg{
+  padding: 12px;              /* biar modal nggak nempel pinggir */
+}
+
+.modal{
+  width: min(520px, 92vw);    /* lebih stabil di mobile */
+  max-height: calc(100vh - 120px);
+  overflow: auto;             /* form panjang => scroll di modal */
+}
+
+@media (max-width: 768px){
+  input, select, textarea{
+    font-size: 16px;          /* cegah iOS auto-zoom */
+  }
+}
+
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* HAMBURGER BUTTON */
+.menu-toggle{
+  display: none;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-right: 10px;
+  line-height: 1;
+}
+
+/* OVERLAY (buat gelapin layar pas sidebar kebuka di mobile) */
+.sidebar-overlay{
+  display: none;
+  position: fixed;
+  top: 48px;                 /* pas di bawah topbar */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 48px);
+  background: rgba(0,0,0,.45);
+  z-index: 19;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+  .menu-toggle{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* sidebar jadi off-canvas, bukan di-hide */
+  .sidebar{
+    display: flex;                 /* jangan none */
+    width: 240px;
+    transform: translateX(-110%);  /* sembunyi ke kiri */
+    transition: transform .2s ease;
+    z-index: 20;
+  }
+
+  .sidebar.open{
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.show{
+    display: block;
+  }
+
+  .page{
+    margin-left: 0;
+    padding: 90px 10px;
+  }
+}
+
+
+/* sort */
+th.sortable {
+  position: relative;
+  padding-right: 18px; /* kasih space biar teks tidak nabrak icon */
+}
+
+th.sortable::after {
+  content: "⇅";
+  position: absolute;
+  right: 6px;   /* icon ke pojok kanan */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  opacity: 0.7;
+  pointer-events: none; /* supaya klik tetap kena th, bukan icon */
+}
+/* table search */
+.table-search input {
+  outline: none;
+}
+
+/* ===================== */
+/* LOGIN PAGE STYLING    */
+/* ===================== */
+
+/* body khusus halaman login */
+body.login-page {
+  background: #f5f7fb;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* wrapper login */
+.login-wrapper {
+  width: 100%;
+  max-width: 960px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+/* kartu login dengan bingkai hijau gradasi */
+.login-card {
+  display: flex;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12);
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #16a34a, #22c55e) border-box;
+  border: 5px solid transparent;
+}
+
+/* sisi kiri (form) */
+.login-left {
+  flex: 1;
+  padding: 32px 32px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #16813e;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+/* label form login */
+.login-left label {
+  display: block;
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* input login */
+.input-control {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-control:focus {
+  outline: none;
+  border-color: #16813e;
+  box-shadow: 0 0 0 2px rgba(22,129,62,0.15);
+}
+
+/* tombol login */
+.btn-submit {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #16a34a, #166534);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.32);
+  transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-submit:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 12px 25px rgba(22, 163, 74, 0.40);
+  transform: translateY(-1px);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.30);
+}
+
+/* footer kecil di bawah form */
+.login-footer {
+  margin-top: 18px;
+  font-size: 11px;
+  color: #9ca3af;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-footer span {
+  color: #16813e;
+  font-weight: 600;
+}
+
+/* alert error login */
+.error-alert {
+  margin-bottom: 14px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+  border: 1px solid #fecaca;
+}
+
+/* sisi kanan (gambar) */
+.login-right {
+  flex: 1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+
+.login-right img {
+  max-width: 100%;
+  height: auto;
+}
+
+.login-right-tag {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 6px 10px;
+  background: rgba(15, 23, 42, 0.6);
+  color: #ecfdf5;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+/* logo brand */
+
+.brand-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 0;        /* optional */
+  background: transparent; /* REMOVE GREEN */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.brand-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+
+
+.brand-name {
+  font-weight: 700;
+  font-size: 20px;
+  color: #0b8f3c;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* responsive login */
+@media (max-width: 900px) {
+  .login-card {
+    flex-direction: column;
+  }
+  .login-right {
+    display: none;
+  }
+  .login-left {
+    padding: 24px 20px 20px;
+  }
+}
+
+.table-wrap{
+  width: 100%;
+  overflow-x: auto;
+}
+
+table{
+  min-width: 640px; /* biar kolom action gak “kepotong” di mobile */
+}
+
+.actions{
+  white-space: nowrap;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit{
+  display: inline-block;
+  padding: 6px 12px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-edit:hover{
+  filter: brightness(0.95);
+  transform: scale(1.03);
+}
+
+.self-note{
+  font-size: 12px;
+  color: #666;
+}
+
