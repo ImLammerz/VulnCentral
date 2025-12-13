@@ -69,5 +69,5 @@ Login: https://vulncentral/login.php
 
 ## Feedback
 
-If you have any feedback, please reach out to me at sltfalah(@).com
+If you have any feedback, please reach out to me at sltfalah(@)gmail.com
 
