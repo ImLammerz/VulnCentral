@@ -240,6 +240,25 @@ button.close {
     background-color: #a91515;
 }
 
+.inline-form {
+  display: inline;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-buttons button,
+.action-buttons .btn-delete {
+  margin-bottom: 0;
+}
+
+.action-buttons .inline-form {
+  margin: 0;
+}
+
 /* CHART AREA */
 .charts-row {
   display: flex;

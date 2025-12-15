@@ -100,34 +100,37 @@ require 'module/admin-logic.php';
             <?php endif; ?>
           </td>
           <td>
-            <button type="button"
-                    onclick="editAsset(this)"
-                    data-id="<?= $id ?>"
-                    data-name="<?= htmlspecialchars($s['name'],ENT_QUOTES) ?>"
-                    data-web="<?= htmlspecialchars($s['website'],ENT_QUOTES) ?>"
-                    data-date="<?= htmlspecialchars($date,ENT_QUOTES) ?>"
-                    data-need="<?= htmlspecialchars($s['need_auth'],ENT_QUOTES) ?>"
-                    data-auth="<?= htmlspecialchars($s['auth_use'],ENT_QUOTES) ?>"
-                    data-crit="<?= $crit ?>"
-                    data-high="<?= $high ?>"
-                    data-med="<?= $med ?>"
-                    data-low="<?= $low ?>"
-                    data-file="<?= htmlspecialchars($file,ENT_QUOTES) ?>"
-                    data-system="<?= htmlspecialchars($s['name'],ENT_QUOTES) ?>"
-            >Edit Asset</button>
+            <div class="action-buttons">
+              <button type="button"
+                      onclick="editAsset(this)"
+                      data-id="<?= $id ?>"
+                      data-name="<?= htmlspecialchars($s['name'],ENT_QUOTES) ?>"
+                      data-web="<?= htmlspecialchars($s['website'],ENT_QUOTES) ?>"
+                      data-date="<?= htmlspecialchars($date,ENT_QUOTES) ?>"
+                      data-need="<?= htmlspecialchars($s['need_auth'],ENT_QUOTES) ?>"
+                      data-auth="<?= htmlspecialchars($s['auth_use'],ENT_QUOTES) ?>"
+                      data-crit="<?= $crit ?>"
+                      data-high="<?= $high ?>"
+                      data-med="<?= $med ?>"
+                      data-low="<?= $low ?>"
+                      data-file="<?= htmlspecialchars($file,ENT_QUOTES) ?>"
+                      data-system="<?= htmlspecialchars($s['name'],ENT_QUOTES) ?>"
+              >Edit Asset</button>
 
-            <button type="button"
-                    onclick="openUploadModal(this)"
-                    data-id="<?= $id ?>"
-                    data-file="<?= htmlspecialchars($file,ENT_QUOTES) ?>"
-                    data-system="<?= htmlspecialchars($s['name'],ENT_QUOTES) ?>"
-            >Edit PDF</button>
+              <button type="button"
+                      onclick="openUploadModal(this)"
+                      data-id="<?= $id ?>"
+                      data-file="<?= htmlspecialchars($file,ENT_QUOTES) ?>"
+                      data-system="<?= htmlspecialchars($s['name'],ENT_QUOTES) ?>"
+              >Edit PDF</button>
 
-            <a href="admin.php?delete=<?= $id ?>"
-               class="btn-delete"
-               onclick="return confirm('Delete this asset?')">
-               Delete
-            </a>
+              <form method="post" class="inline-form" onsubmit="return confirm('Delete this asset?');">
+                <input type="hidden" name="action" value="delete_system">
+                <input type="hidden" name="id" value="<?= $id ?>">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+                <button type="submit" class="btn-delete">Delete</button>
+              </form>
+            </div>
           </td>
         </tr>
       <?php endforeach; ?>
@@ -144,6 +147,7 @@ require 'module/admin-logic.php';
 
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="action" value="save_system">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
       <input type="hidden" name="id" id="idField" value="0">
       <input type="hidden" name="current_file" id="currentFile" value="">
 
@@ -203,6 +207,7 @@ require 'module/admin-logic.php';
 
     <form method="post" enctype="multipart/form-data">
       <input type="hidden" name="action" value="upload_pdf">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
       <input type="hidden" name="id" id="uploadIdField" value="0">
       <input type="hidden" name="current_file" id="uploadCurrentFile" value="">
 

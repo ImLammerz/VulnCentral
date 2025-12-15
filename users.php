@@ -7,23 +7,35 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'ADMIN') {
   exit;
 }
 
+$csrfToken     = get_csrf_token();
 $role          = $_SESSION['role'];
 $loginUserId   = $_SESSION['user_id'];
 $usernameLogin = $_SESSION['username'] ?? '';
 
-// DELETE USER
-if (isset($_GET['delete'])) {
-  $id = (int)$_GET['delete'];
-
-  if ($id != $loginUserId) {
-    $conn->query("DELETE FROM users WHERE id=$id");
-  }
-  header('Location: users.php');
-  exit;
-}
-
 // CREATE / UPDATE USER
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+    http_response_code(400);
+    exit('Invalid CSRF token');
+  }
+
+  $action = $_POST['action'] ?? 'save_user';
+
+  // DELETE USER
+  if ($action === 'delete_user') {
+    $id = (int)($_POST['id'] ?? 0);
+
+    if ($id > 0 && $id != $loginUserId) {
+      $stmt = $conn->prepare("DELETE FROM users WHERE id=?");
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $stmt->close();
+    }
+
+    header('Location: users.php');
+    exit;
+  }
+
   $id       = (int)($_POST['id'] ?? 0);
   $username = trim($_POST['username']);
   $password = trim($_POST['password']);
@@ -100,21 +112,22 @@ $activeMenu = 'users';
         <td><?= $u['id'] ?></td>
         <td><?= htmlspecialchars($u['username']) ?></td>
         <td><?= htmlspecialchars($u['role']) ?></td>
-	<td class="actions">
- 		<button type="button" class="btn-edit"
-    		onclick='openUserModal(<?= json_encode($u, JSON_HEX_APOS|JSON_HEX_TAG|JSON_HEX_AMP) ?>)'>
-    		Edit
-  		</button>
+        <td class="actions">
+                <button type="button" class="btn-edit"
+                onclick='openUserModal(<?= json_encode($u, JSON_HEX_APOS|JSON_HEX_TAG|JSON_HEX_AMP) ?>)'>
+                Edit
+                </button>
 
-  		<?php if ($u['id'] != $loginUserId): ?>
-   		<a class="btn-delete"
-       		href="users.php?delete=<?= $u['id'] ?>"
-       		onclick="return confirm('Delete this user?')">
-       		Delete
-    		</a>
-  		<?php else: ?>
-    		<span class="self-note">(YOU)</span>
-  		<?php endif; ?>
+                <?php if ($u['id'] != $loginUserId): ?>
+                <form method="post" class="inline-form" onsubmit="return confirm('Delete this user?');">
+                  <input type="hidden" name="action" value="delete_user">
+                  <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+                  <button type="submit" class="btn-delete">Delete</button>
+                </form>
+                <?php else: ?>
+                <span class="self-note">(YOU)</span>
+                <?php endif; ?>
 	</td>
 
       </tr>
@@ -130,6 +143,8 @@ $activeMenu = 'users';
     <h3 id="user-modal-title">Tambah User Baru</h3>
     <form method="POST">
       <input type="hidden" name="id" id="user-id">
+      <input type="hidden" name="action" value="save_user">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
 
       <label>Username</label>
       <input type="text" name="username" id="user-username" required>
