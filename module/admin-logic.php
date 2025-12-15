@@ -1,6 +1,8 @@
 <?php
 require 'config.php';
 
+$csrfToken = get_csrf_token();
+
 if (!isset($_SESSION['user_id'])) {
   header("Location: login.php");
   exit;
@@ -12,37 +14,41 @@ if (($_SESSION['role'] ?? '') !== 'ADMIN') {
 }
 
 /* ============================
-   DELETE ASSET
-   ============================ */
-if (isset($_GET['delete'])) {
-  $id = (int)$_GET['delete'];
-
-  // ambil file_name dulu untuk dihapus dari folder uploads
-  $stmt = $conn->prepare("SELECT file_name FROM systems WHERE id=?");
-  $stmt->bind_param("i", $id);
-  $stmt->execute();
-  $stmt->bind_result($fileToDelete);
-  if ($stmt->fetch() && $fileToDelete) {
-    $path = dirname(__DIR__) . '/uploads/' . $fileToDelete;
-    if (is_file($path)) @unlink($path);
-  }
-  $stmt->close();
-
-  // hapus asset
-  $del = $conn->prepare("DELETE FROM systems WHERE id=?");
-  $del->bind_param("i", $id);
-  $del->execute();
-  $del->close();
-
-  header("Location: admin.php");
-  exit;
-}
-
-/* ============================
    INSERT / UPDATE + UPLOAD PDF
    ============================ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+    http_response_code(400);
+    exit('Invalid CSRF token');
+  }
+
   $action = $_POST['action'] ?? 'save_system';
+
+  // === 0. DELETE ASSET ===
+  if ($action === 'delete_system') {
+    $id = (int)($_POST['id'] ?? 0);
+    if ($id > 0) {
+      // ambil file_name dulu untuk dihapus dari folder uploads
+      $stmt = $conn->prepare("SELECT file_name FROM systems WHERE id=?");
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $stmt->bind_result($fileToDelete);
+      if ($stmt->fetch() && $fileToDelete) {
+        $path = dirname(__DIR__) . '/uploads/' . $fileToDelete;
+        if (is_file($path)) @unlink($path);
+      }
+      $stmt->close();
+
+      // hapus asset
+      $del = $conn->prepare("DELETE FROM systems WHERE id=?");
+      $del->bind_param("i", $id);
+      $del->execute();
+      $del->close();
+    }
+
+    header("Location: admin.php");
+    exit;
+  }
 
   // === 1. KHUSUS UPLOAD PDF SAJA (TIDAK MENAMBAHKAN HISTORY) ===
   if ($action === 'upload_pdf') {
